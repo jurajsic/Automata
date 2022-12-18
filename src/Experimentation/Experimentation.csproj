@@ -16,7 +16,7 @@
     <PlatformTarget>x64</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
-    <Optimize>true</Optimize>
+    <Optimize>false</Optimize>
     <OutputPath>bin\x64\Debug\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
@@ -71,6 +71,8 @@
     <Reference Include="System.Web" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="NFA\EmpParser.cs" />
+    <Compile Include="NFA\MataParser.cs" />
     <Compile Include="NFA\NFAUtil.cs" />
     <Compile Include="NFA\RandomNFAExperiment.cs" />
     <Compile Include="NFA\RegexExperiment.cs" />

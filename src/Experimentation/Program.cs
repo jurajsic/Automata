@@ -35,7 +35,7 @@ namespace RunExperiments
         static internal string largeAlphabetPrefix = "large";
         static internal string fastPrefix = "fast";
 
-        static void Main(string[] args)
+        static int Main(string[] args)
         {
             //Test generation for Fast
             // This takes hours
@@ -69,8 +69,24 @@ namespace RunExperiments
             VerificationNFAExperiment.RunFinAlphTest();
              */
 
-            var tests = new RegexExtensionMethodTests();
-            tests.TestRegex_CompileToSymbolicRegex_IsMatch_IgnoreCaseTrue();
+            //var tests = new RegexExtensionMethodTests();
+            //tests.TestRegex_CompileToSymbolicRegex_IsMatch_IgnoreCaseTrue();
+
+            if (args.Length != 1)
+            {
+                Console.Error.WriteLine("Program expects one argument - the path to .emp file");
+                return -1;
+            }
+
+            if ((new Experimentation.NFA.EmpParser(args[0])).parseAndCheckEmptiness())
+            {
+                Console.WriteLine("EMPTY");
+            }
+            else
+            {
+                Console.WriteLine("NOT EMPTY");
+            }
+            return 0;
         }
 
     }
