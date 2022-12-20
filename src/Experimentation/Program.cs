@@ -6,12 +6,8 @@ using System.Threading.Tasks;
 using System.Threading;
 using System.IO;
 
-using Microsoft.Automata.Z3;
-using Microsoft.Automata.Z3.Internal;
 using Microsoft.Automata;
-using Microsoft.Z3;
 using System.Diagnostics;
-using Automata.Tests;
 
 namespace RunExperiments
 {
