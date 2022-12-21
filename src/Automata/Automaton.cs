@@ -2289,7 +2289,7 @@ namespace Microsoft.Automata
 
             int deadState = maxState + 1;
             bool deadStateIsUsed = false;
-            List<Move<T>> complMoves = new List<Move<T>>();
+            List<Move<T>> complMoves = new List<Move<T>>(GetMoves());
             foreach (int state in States)
             {
                 var cond = solver.MkNot(solver.MkOr(EnumerateConditions(state)));
