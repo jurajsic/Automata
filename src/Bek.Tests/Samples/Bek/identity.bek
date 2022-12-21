@@ -1,6 +1,0 @@
-program trivial(t) { 
-    return iter(c in t) {
-        case (true): 
-            yield (c);
-    }; 
-}

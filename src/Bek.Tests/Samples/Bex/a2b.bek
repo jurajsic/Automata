@@ -1,8 +1,0 @@
-
-//replace "a" by "b"
-
-program a2b(_){ 
-  replace {
-     "a" ==> "b"; 
-  };
-}

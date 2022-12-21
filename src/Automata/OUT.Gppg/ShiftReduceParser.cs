@@ -657,7 +657,7 @@ namespace QUT.Gppg
     public class LexLocation : IMerge<LexLocation>
 #else
     [SuppressMessage("Microsoft.Performance", "CA1812:AvoidUninstantiatedInternalClasses")]
-    internal class LexLocation : IMerge<LexLocation>
+    public class LexLocation : IMerge<LexLocation>
 #endif
     {
         private int startLine;   // start line

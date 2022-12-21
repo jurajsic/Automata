@@ -101,11 +101,11 @@ namespace Microsoft.Automata
         /// <summary>
         /// Store the BDD as a graph in the given file.
         /// </summary>
-        public void ToDot(string file)
-        {
-            string fname = (file.EndsWith(".dot") ? file : file + ".dot");
-            Microsoft.Automata.DirectedGraphs.DotWriter.CharSetToDot(this, file, fname, DirectedGraphs.DotWriter.RANKDIR.TB, 12);
-        }
+        //public void ToDot(string file)
+        //{
+        //    string fname = (file.EndsWith(".dot") ? file : file + ".dot");
+        //    Microsoft.Automata.DirectedGraphs.DotWriter.CharSetToDot(this, file, fname, DirectedGraphs.DotWriter.RANKDIR.TB, 12);
+        //}
 
         protected virtual string PrintLeaf()
         {
@@ -119,12 +119,6 @@ namespace Microsoft.Automata
 
         public override string ToString()
         {
-            if (algebra is ICharAlgebra<BDD>)
-            {
-                return (algebra as ICharAlgebra<BDD>).PrettyPrint(this);
-            }
-            else
-            {
                 if (IsLeaf)
                 {
                     return PrintLeaf();
@@ -148,7 +142,6 @@ namespace Microsoft.Automata
                     sb.Append("}");
                     return sb.ToString();
                 }
-            }
         }
 
         IEnumerable<string> EnumCases()
@@ -276,13 +269,13 @@ namespace Microsoft.Automata
             return algebra.MkDiff(this, other);
         }
 
-        public Tuple<uint,uint>[] ToRanges(int bound = 0)
-        {
-            CharSetSolver solver = algebra as CharSetSolver;
-            if (solver == null)
-                throw new AutomataException(AutomataExceptionKind.AlgebraMustBeCharSetSolver);
-            return solver.ToRanges(this, bound);
-        }
+        //public Tuple<uint,uint>[] ToRanges(int bound = 0)
+        //{
+        //    CharSetSolver solver = algebra as CharSetSolver;
+        //    if (solver == null)
+        //        throw new AutomataException(AutomataExceptionKind.AlgebraMustBeCharSetSolver);
+        //    return solver.ToRanges(this, bound);
+        //}
 
         /// <summary>
         /// Decrement the ordinals of all nodes by k, k must be nonnegative.

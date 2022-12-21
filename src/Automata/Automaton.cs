@@ -351,29 +351,6 @@ namespace Microsoft.Automata
             }
         }
 
-        public void ShowGraph(string name = "Automaton")
-        {
-            CharSetSolver css = this.algebra as CharSetSolver;
-            if (css != null)
-                css.ShowGraph(this as Automaton<BDD>, name);
-            else
-            {
-                var pp = algebra as IPrettyPrinter<T>;
-                if (pp != null)
-                    DirectedGraphs.DgmlWriter.ShowGraph<T>(-1, this, name, pp.PrettyPrint);
-                else
-                    DirectedGraphs.DgmlWriter.ShowGraph<T>(-1, this, name);
-            }
-        }
-
-        public void SaveGraph(string name = "Automaton")
-        {
-            var pp = algebra as IPrettyPrinter<T>;
-            if (pp != null)
-                DirectedGraphs.DgmlWriter.SaveGraph<T>(-1, this, name, pp.PrettyPrint);
-            else
-                DirectedGraphs.DgmlWriter.SaveGraph<T>(-1, this, name);
-        }
 
         /// <summary>
         /// Returns all states that are reachable via epsilon moves, including the state itself.
@@ -5623,22 +5600,6 @@ namespace Microsoft.Automata
             return norm;
         }
 
-        /// <summary>
-        /// Normalizes and compiles the automaton to 
-        /// C# code that is exposed through the ICompiledStringMatcher interface.
-        /// The automaton must be deterministic and the algebra must be CharSetSolver.
-        /// </summary>
-        public IMatcher Compile(string classname = null, string namespacename = null)
-        {
-            if (!(algebra is CharSetSolver))
-                throw new AutomataException(AutomataExceptionKind.AlgebraMustBeCharSetSolver);
-            if (!this.IsDeterministic)
-                throw new AutomataException(AutomataExceptionKind.AutomatonIsNondeterministic);
-
-            var compiler = new AutomataCSharpCompiler(this as Automaton<BDD>, classname, namespacename, true);
-            var res = compiler.Compile();
-            return res;
-        }
     }
 
     #region Helper classes used in various algorithms
