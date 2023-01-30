@@ -32,6 +32,9 @@ namespace Experimentation.NFA
 
         private int getStateNum(string name)
         {
+            if (name[0] != 'q') {
+                throw new Exception("Name of states have to start with 'q'");
+            }
             if (!namesToStates.TryGetValue(name, out int stateNum))
             {
                 stateNum = maxState;
@@ -55,6 +58,10 @@ namespace Experimentation.NFA
             else if (name == "true")
             {
                 return algebra.True;
+            }
+
+            if (name[0] != 'a') {
+                throw new Exception("Name of bits have to start with 'a'");
             }
 
             if (!namesToBDDs.TryGetValue(name, out BDD returnBDD))
@@ -216,17 +223,51 @@ namespace Experimentation.NFA
                 }
                 else
                 { // transition
-                    string formula = String.Join("", tokens.Where((item, index) => ((index != 0) && (index != tokens.Length - 1))));
+                    int stateFrom = getStateNum(tokens[0]);
+
+                    int startOfStatesTo = tokens.Last().Last() == ')' ? Array.FindLastIndex(tokens, token => (token[0] == '(')) : tokens.Length - 1;
+
+                    string formula = String.Join("", tokens.Where((item, index) => ((index != 0) && (index < startOfStatesTo))));
                     BDD predicate = getBDDFromStringFormula(formula);
                     if (predicate.IsEmpty)
                     {
                         continue;
                     }
+                    
+                    List<int> statesTo = new List<int>();
+                    bool expectsOperator = false;
+                    for (int i = startOfStatesTo; i < tokens.Length; ++i)
+                    {
+                        if (expectsOperator)
+                        {
+                            if (tokens[i] != "|")
+                            {
+                                throw new Exception("States that transition go to are expected to be given as a disjunction");
+                            }
+                        }
+                        else
+                        {
+                            string stateName;
+                            if (tokens[i][0] == '(')
+                            {
+                                stateName = tokens[i].Substring(1);
+                            }
+                            else if (tokens[i].Last() == ')')
+                            {
+                                stateName = tokens[i].Substring(0, tokens[i].Length - 1);
+                            }
+                            else
+                            {
+                                stateName = tokens[i];
+                            }
+                            statesTo.Add(getStateNum(stateName));
+                        }
+                        expectsOperator = !expectsOperator;
+                    }
 
-                    int stateFrom = getStateNum(tokens[0]);
-                    int stateTo = getStateNum(tokens.Last());
-
-                    Transitions.Add(new Move<BDD>(stateFrom, stateTo, predicate));
+                    foreach (int stateTo in statesTo) {
+                        Transitions.Add(new Move<BDD>(stateFrom, stateTo, predicate));
+                    }
                 }
             }
 
