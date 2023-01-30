@@ -187,6 +187,9 @@ namespace Experimentation.NFA
                 }
                 else if (tokens[0] == "%Final")
                 { // (non)final states
+                    if (tokens.Length == 2 && tokens[1] == "true") {
+                        continue;
+                    }
                     bool expectsOperator = false;
                     for (int i = 1; i < tokens.Length; ++i)
                     {
