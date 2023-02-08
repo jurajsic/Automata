@@ -6,12 +6,17 @@ if (args.Length != 1)
     return -1;
 }
 
-if ((new EmpParser(args[0])).parseAndCheckEmptiness())
-{
-    Console.WriteLine("EMPTY");
-}
-else
-{
-    Console.WriteLine("NOT EMPTY");
+try {
+    if ((new EmpParser(args[0])).parseAndCheckEmptiness())
+    {
+        Console.WriteLine("result: EMPTY");
+    }
+    else
+    {
+        Console.WriteLine("result: NOT EMPTY");
+    }
+} catch (Exception ex) {
+    Console.Error.WriteLine("error: " + ex.Message);
+    return -1;
 }
 return 0;
