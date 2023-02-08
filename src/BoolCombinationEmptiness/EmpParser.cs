@@ -57,9 +57,12 @@ namespace Experimentation.NFA
 
                     if (tokens[1] == "compl")
                     {
-                        result = result.Determinize().Minimize().MkComplement(algebra);
-                        // MkComplement of minimal deteministic automaton is also minimal deterministic automaton, so we do not minimize result
-                        numToAutomaton[getAutNumFromName(tokens[0])] = result;
+                        if (result.isDeterministic) {
+                            // if it is deterministic it means it is already minimal
+                            numToAutomaton[getAutNumFromName(tokens[0])] = result.MkComplement(algebra);
+                        } else {
+                            numToAutomaton[getAutNumFromName(tokens[0])] = result.Determinize().Minimize().MkComplement(algebra);
+                        }
                     }
                     else
                     {
@@ -84,11 +87,10 @@ namespace Experimentation.NFA
                             }
 
                             // we also minimize result so that next operations are faster
-                            numToAutomaton[getAutNumFromName(tokens[0])] = result.Minimize();
+                            result = result.Minimize();
                         }
+                        numToAutomaton[getAutNumFromName(tokens[0])] = result;
                     }
-                    int resAutNum = getAutNumFromName(tokens[0]);
-                    numToAutomaton[resAutNum] = result.Minimize();
                 }
             }
             if (!numToAutomaton.TryGetValue(autNumToCheck.Value, out Automaton<BDD> autToCheck))
