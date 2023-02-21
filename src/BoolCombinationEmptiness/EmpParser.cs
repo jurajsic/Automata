@@ -34,6 +34,8 @@ namespace Experimentation.NFA
             BDDAlgebra algebra = new BDDAlgebra();
             var mataParser = new MataBitAlphabetParser(algebra);
             int? autNumToCheck = null;
+            int? autNumToCheck1 = null;
+            int? autNumToCheck2 = null;
 
             var pathToAutDir = System.IO.Path.Combine(System.IO.Directory.GetParent(filePath).FullName, "gen_aut");
 
@@ -47,6 +49,12 @@ namespace Experimentation.NFA
                 else if (tokens[0] == "is_empty")
                 {
                     autNumToCheck = getAutNumFromName(tokens[1]);
+                }
+                else if (tokens[0] == "incl")
+                {
+
+                    autNumToCheck1 = getAutNumFromName(tokens[1]);
+                    autNumToCheck2 = getAutNumFromName(tokens[2]);
                 }
                 else
                 {
@@ -93,11 +101,23 @@ namespace Experimentation.NFA
                     }
                 }
             }
-            if (!numToAutomaton.TryGetValue(autNumToCheck.Value, out Automaton<BDD> autToCheck))
+
+            if (!autNumToCheck.HasValue)
             {
-                throw new Exception("Checking emptiness of non-existing automaton");
+                if (!numToAutomaton.TryGetValue(autNumToCheck1.Value, out Automaton<BDD> autToCheck1) || !numToAutomaton.TryGetValue(autNumToCheck2.Value, out Automaton<BDD> autToCheck2))
+                {
+                    throw new Exception("Checking inclusion of non-existing automata");
+                }
+                return Automaton<BDD>.MkDifference(autToCheck1, autToCheck2, 0).IsEmpty;
             }
-            return autToCheck.IsEmpty;
+            else
+            {
+                if (!numToAutomaton.TryGetValue(autNumToCheck.Value, out Automaton<BDD> autToCheck))
+                {
+                    throw new Exception("Checking emptiness of non-existing automaton");
+                }
+                return autToCheck.IsEmpty;
+            }
         }
     }
 }
