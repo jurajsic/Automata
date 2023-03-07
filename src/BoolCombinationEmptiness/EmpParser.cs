@@ -108,7 +108,8 @@ namespace Experimentation.NFA
                 {
                     throw new Exception("Checking inclusion of non-existing automata");
                 }
-                return Automaton<BDD>.MkDifference(autToCheck1, autToCheck2, 0).IsEmpty;
+                List<BDD> tmp_throw;
+                return Automaton<BDD>.CheckDifference(autToCheck1, autToCheck2, 0, out tmp_throw);
             }
             else
             {
